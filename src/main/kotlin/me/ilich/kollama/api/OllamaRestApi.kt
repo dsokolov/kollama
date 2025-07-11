@@ -1,9 +1,6 @@
 package me.ilich.kollama.api
 
-import me.ilich.kollama.api.data.GenerateRequest
-import me.ilich.kollama.api.data.GenerateResponse
-import me.ilich.kollama.api.data.TagsResponse
-import me.ilich.kollama.api.data.VersionResponse
+import me.ilich.kollama.api.data.*
 
 /**
  * https://github.com/ollama/ollama/blob/main/docs/api.md
@@ -25,4 +22,8 @@ interface OllamaRestApi {
      */
     suspend fun generate(request: GenerateRequest): GenerateResponse
 
+    /**
+     * https://github.com/ollama/ollama/blob/main/docs/api.md#show-model-information
+     */
+    suspend fun show(request: ShowRequest): ShowResponse
 }
