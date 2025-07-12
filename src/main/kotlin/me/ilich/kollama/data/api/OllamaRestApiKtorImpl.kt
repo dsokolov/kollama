@@ -1,4 +1,4 @@
-package me.ilich.kollama.api
+package me.ilich.kollama.data.api
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -6,13 +6,12 @@ import io.ktor.client.request.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import me.ilich.kollama.api.OllamaRestApi
-import me.ilich.kollama.api.data.GenerateRequest
-import me.ilich.kollama.api.data.GenerateResponse
-import me.ilich.kollama.api.data.ShowRequest
-import me.ilich.kollama.api.data.ShowResponse
-import me.ilich.kollama.api.data.TagsResponse
-import me.ilich.kollama.api.data.VersionResponse
+import me.ilich.kollama.data.api.data.GenerateRequest
+import me.ilich.kollama.data.api.data.GenerateResponse
+import me.ilich.kollama.data.api.data.ShowRequest
+import me.ilich.kollama.data.api.data.ShowResponse
+import me.ilich.kollama.data.api.data.TagsResponse
+import me.ilich.kollama.data.api.data.VersionResponse
 import java.net.URI
 import io.ktor.http.*
 

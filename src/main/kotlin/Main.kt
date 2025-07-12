@@ -1,7 +1,7 @@
 package me.ilich.kollama
 
 import kotlinx.coroutines.runBlocking
-import me.ilich.kollama.me.ilich.kollama.domain.OllamaModelName
+import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaModelName
 import me.ilich.kollama.me.ilich.kollama.ollama
 
 fun main() = runBlocking {
@@ -9,27 +9,14 @@ fun main() = runBlocking {
 
     val ollama = ollama()
 
-//    println(ollama.version())
-//    val models = ollama.models()
-//    println(models)
-//    models.forEach { model ->
-//        ollama.model(model.name)
-//    }
+    val version = ollama.version()
+    println("Version: $version")
+    val models = ollama.models()
+    models.forEach { model ->
+        println("Model: ${model.name}")
+        val details = ollama.model(model.name)
+        println("*** begin model file ***\n${details.modelFile}\n*** end model file ***\n")
+    }
 
-    val modelName = OllamaModelName("deepseek-r1:latest")
-    println(ollama.model(modelName))
-
-//    val api : OllamaRestApi = OllamaRestApiKtorImpl("http://127.0.0.1:11434")
-//
-//    val versionResponse = api.version()
-//    println(versionResponse)
-//
-//    val tagsResponse = api.tags()
-//    println(tagsResponse)
-
-//    val geenrateRequest = GenerateRequest(
-//        model =
-//    )
-//    val generate = api.generate()
     println("end")
 }

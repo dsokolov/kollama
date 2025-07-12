@@ -1,31 +1,17 @@
-package me.ilich.kollama
+package me.ilich.kollama.me.ilich.kollama
 
-import me.ilich.kollama.api.OllamaRestApi
-import me.ilich.kollama.me.ilich.kollama.OllamaMapper
-import me.ilich.kollama.me.ilich.kollama.domain.OllamaModel
-import me.ilich.kollama.me.ilich.kollama.domain.OllamaModelFull
-import me.ilich.kollama.me.ilich.kollama.domain.OllamaModelName
-import me.ilich.kollama.me.ilich.kollama.domain.OllamaVersion
+import me.ilich.kollama.me.ilich.kollama.data.OllamaClientImpl
+import me.ilich.kollama.data.api.OllamaRestApiKtorImpl
+import me.ilich.kollama.me.ilich.kollama.data.mapper.OllamaMapperImpl
+import me.ilich.kollama.me.ilich.kollama.domain.OllamaClient
+import java.net.URI
 
-class Ollama(
-    private val ollamaRestApi: OllamaRestApi,
-    private val ollamaMapper: OllamaMapper,
-) {
+private val OLLAMA_LOCAL = URI.create("http://127.0.0.1:11434")
 
-    suspend fun version(): OllamaVersion {
-        val versionResponse = ollamaRestApi.version()
-        val version = ollamaMapper.map(versionResponse)
-        return version
-    }
-
-    suspend fun models(): List<OllamaModel> {
-        val tagsResponse = ollamaRestApi.tags()
-        return ollamaMapper.map(tagsResponse)
-    }
-
-    suspend fun model(name: OllamaModelName) : OllamaModelFull {
-        val showRequest = ollamaMapper.map(name)
-        val showResponse = ollamaRestApi.show(showRequest)
-        return ollamaMapper.map(showResponse)
-    }
-}
+fun ollama(
+    uri: URI = OLLAMA_LOCAL
+) : OllamaClient =
+    OllamaClientImpl(
+        ollamaRestApi = OllamaRestApiKtorImpl(uri),
+        ollamaMapper = OllamaMapperImpl(),
+    )

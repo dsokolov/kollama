@@ -1,6 +1,6 @@
-package me.ilich.kollama.api
+package me.ilich.kollama.data.api
 
-import me.ilich.kollama.api.data.*
+import me.ilich.kollama.data.api.data.*
 
 /**
  * https://github.com/ollama/ollama/blob/main/docs/api.md
