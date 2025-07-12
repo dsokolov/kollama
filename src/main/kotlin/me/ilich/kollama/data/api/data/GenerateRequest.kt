@@ -7,7 +7,12 @@ import kotlinx.serialization.Serializable
 data class GenerateRequest(
     @SerialName("model") val model: String,
     @SerialName("prompt") val prompt: String,
-    @SerialName("suffix") val suffix: String? = null,
-    @SerialName("images") val images: List<String>? = null,
-    @SerialName("think") val think: Boolean? = null,
-)
+    @SerialName("stream") val stream: Boolean,
+    @SerialName("options") val options: Options? = null,
+) {
+
+    @Serializable
+    data class Options(
+        @SerialName("seed") val seed: Int? = null,
+    )
+}

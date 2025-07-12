@@ -1,13 +1,16 @@
-package me.ilich.kollama.me.ilich.kollama.data.mapper
+package me.ilich.kollama.data.mapper
 
 import me.ilich.kollama.data.api.data.ShowRequest
 import me.ilich.kollama.data.api.data.ShowResponse
 import me.ilich.kollama.data.api.data.TagsResponse
 import me.ilich.kollama.data.api.data.VersionResponse
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaModelShort
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaModelDetails
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaModelName
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaVersion
+import me.ilich.kollama.data.api.data.GenerateRequest
+import me.ilich.kollama.data.api.data.GenerateResponse
+import me.ilich.kollama.domain.model.OllamaModelShort
+import me.ilich.kollama.domain.model.OllamaModelDetails
+import me.ilich.kollama.domain.model.OllamaModelName
+import me.ilich.kollama.domain.model.OllamaVersion
+import me.ilich.kollama.domain.model.OllamaGenerated
 
 internal class OllamaMapperImpl : OllamaMapper {
 
@@ -31,5 +34,29 @@ internal class OllamaMapperImpl : OllamaMapper {
         OllamaModelDetails(
             modelFile = showResponse.modelfile,
             parameters = showResponse.parameters,
+        )
+
+    override fun mapGenerateRequest(
+        model: OllamaModelName,
+        prompt: String,
+        stream: Boolean,
+        seed: Int?
+    ): GenerateRequest =
+        GenerateRequest(
+            model = model.model,
+            prompt = prompt,
+            stream = stream,
+            options = if (seed != null) {
+                GenerateRequest.Options(
+                    seed = seed
+                )
+            } else {
+                null
+            }
+        )
+
+    override fun mapGenerateResponse(response: GenerateResponse): OllamaGenerated =
+        OllamaGenerated.Standard(
+            response = response.response
         )
 }

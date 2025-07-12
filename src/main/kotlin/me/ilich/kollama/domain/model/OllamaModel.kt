@@ -1,4 +1,4 @@
-package me.ilich.kollama.me.ilich.kollama.domain.model
+package me.ilich.kollama.domain.model
 
 
 @JvmInline

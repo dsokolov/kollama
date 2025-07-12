@@ -1,6 +1,10 @@
 package me.ilich.kollama.data.api.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class GenerateResponse(
-    val response: String,
-    val done: Boolean
-) 
+    @SerialName("response") val response: String,
+    @SerialName("done") val done: Boolean,
+)

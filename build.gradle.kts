@@ -1,10 +1,15 @@
 plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
+    application
 }
 
 group = "me.ilich.kollama"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("me.ilich.kollama.MainKt")
+}
 
 repositories {
     mavenCentral()
