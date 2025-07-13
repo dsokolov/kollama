@@ -5,14 +5,27 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import java.net.URI
 import kotlinx.serialization.json.Json
 import me.ilich.kollama.data.model.ChatRequest
 import me.ilich.kollama.data.model.ChatResponse
+import me.ilich.kollama.data.model.CopyRequest
+import me.ilich.kollama.data.model.CopyResponse
+import me.ilich.kollama.data.model.CreateRequest
+import me.ilich.kollama.data.model.CreateResponse
+import me.ilich.kollama.data.model.DeleteRequest
+import me.ilich.kollama.data.model.DeleteResponse
+import me.ilich.kollama.data.model.EmbeddingsRequest
+import me.ilich.kollama.data.model.EmbeddingsResponse
 import me.ilich.kollama.data.model.GenerateRequest
 import me.ilich.kollama.data.model.GenerateResponse
+import me.ilich.kollama.data.model.PullRequest
+import me.ilich.kollama.data.model.PullResponse
+import me.ilich.kollama.data.model.PushRequest
+import me.ilich.kollama.data.model.PushResponse
 import me.ilich.kollama.data.model.ShowRequest
 import me.ilich.kollama.data.model.ShowResponse
 import me.ilich.kollama.data.model.TagsResponse
@@ -57,6 +70,42 @@ internal class OllamaRestApiKtorImpl(
         client.post(
             "/api/chat".resolve()
         ) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun pull(request: PullRequest): PullResponse =
+        client.post("/api/pull".resolve()) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun push(request: PushRequest): PushResponse =
+        client.post("/api/push".resolve()) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun create(request: CreateRequest): CreateResponse =
+        client.post("/api/create".resolve()) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun copy(request: CopyRequest): CopyResponse =
+        client.post("/api/copy".resolve()) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun delete(request: DeleteRequest): DeleteResponse =
+        client.delete("/api/delete".resolve()) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun embeddings(request: EmbeddingsRequest): EmbeddingsResponse =
+        client.post("/api/embeddings".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
