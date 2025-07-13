@@ -17,7 +17,7 @@ fun main() = runBlocking {
 
     try {
         // Get available models
-        val availableModels = ollamaClient.models()
+        val availableModels = ollamaClient.getManipulations().models()
         println("Available models: ${availableModels.size}")
         
         if (availableModels.isNotEmpty()) {
@@ -33,7 +33,7 @@ fun main() = runBlocking {
             println(userMessage)
             
             // Get response from the model
-            val assistantResponse = ollamaClient.chat(firstModel, listOf(userMessage))
+            val assistantResponse = ollamaClient.getCompletions().chat(firstModel, listOf(userMessage))
             println(assistantResponse)
         } else {
             println("No models available")

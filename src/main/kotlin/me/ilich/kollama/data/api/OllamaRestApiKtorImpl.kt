@@ -36,13 +36,15 @@ import me.ilich.kollama.data.model.VersionResponse
  * Ktor-based implementation of Ollama REST API client
  * 
  * @param baseUri The base URI of the Ollama server
+ * @param httpClient Необязательный кастомный HttpClient (для тестов)
  */
 internal class OllamaRestApiKtorImpl(
-    private val baseUri: URI
+    private val baseUri: URI,
+    private val httpClient: HttpClient? = null
 ) : OllamaRestApi {
 
-    private val client by lazy {
-        HttpClient {
+    private val client: HttpClient by lazy {
+        httpClient ?: HttpClient {
             install(ContentNegotiation) {
                 json(Json { 
                     ignoreUnknownKeys = true 

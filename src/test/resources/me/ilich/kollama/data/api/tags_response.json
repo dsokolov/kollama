@@ -1,0 +1,17 @@
+{
+  "models": [
+    {
+      "name": "llama2",
+      "modified_at": "2024-01-01T00:00:00Z",
+      "size": 123456,
+      "digest": "digest1",
+      "details": {
+        "format": "gguf",
+        "family": "llama",
+        "families": ["llama"],
+        "parameter_size": "7B",
+        "quantization_level": "Q4"
+      }
+    }
+  ]
+} 

@@ -1,0 +1,7 @@
+{
+  "model": "llama2",
+  "message": {
+    "role": "assistant",
+    "content": "Hi!"
+  }
+} 
