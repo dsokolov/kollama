@@ -1,16 +1,19 @@
 package me.ilich.kollama.data.mapper
 
-import me.ilich.kollama.data.api.data.ShowRequest
-import me.ilich.kollama.data.api.data.ShowResponse
-import me.ilich.kollama.data.api.data.TagsResponse
-import me.ilich.kollama.data.api.data.VersionResponse
-import me.ilich.kollama.data.api.data.GenerateRequest
-import me.ilich.kollama.data.api.data.GenerateResponse
+import me.ilich.kollama.data.model.ShowRequest
+import me.ilich.kollama.data.model.ShowResponse
+import me.ilich.kollama.data.model.TagsResponse
+import me.ilich.kollama.data.model.VersionResponse
+import me.ilich.kollama.data.model.GenerateRequest
+import me.ilich.kollama.data.model.GenerateResponse
 import me.ilich.kollama.domain.model.OllamaModelShort
 import me.ilich.kollama.domain.model.OllamaModelDetails
 import me.ilich.kollama.domain.model.OllamaModelName
 import me.ilich.kollama.domain.model.OllamaVersion
-import me.ilich.kollama.domain.model.OllamaGenerated
+import me.ilich.kollama.domain.model.OllamaGeneration
+import me.ilich.kollama.me.ilich.kollama.data.model.ChatRequest
+import me.ilich.kollama.me.ilich.kollama.data.model.ChatResponse
+import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaMessage
 
 interface OllamaMapper {
 
@@ -29,5 +32,12 @@ interface OllamaMapper {
         seed: Int? = null,
     ): GenerateRequest
 
-    fun mapGenerateResponse(response: GenerateResponse): OllamaGenerated
+    fun mapGenerateResponse(response: GenerateResponse): OllamaGeneration
+    fun mapChatRequest(
+        model: OllamaModelName,
+        messages: List<OllamaMessage>,
+        stream: Boolean,
+    ): ChatRequest
+
+    fun mapChatResponse(response: ChatResponse): OllamaMessage
 }

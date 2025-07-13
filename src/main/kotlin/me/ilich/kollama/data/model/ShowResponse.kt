@@ -1,15 +1,9 @@
-package me.ilich.kollama.data.api.data
+package me.ilich.kollama.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 // Для сериализации значений model_info как строк
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 
 
 @Serializable

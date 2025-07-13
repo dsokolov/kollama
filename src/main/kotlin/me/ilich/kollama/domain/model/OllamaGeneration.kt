@@ -1,8 +1,8 @@
 package me.ilich.kollama.domain.model
 
-sealed interface OllamaGenerated {
+sealed interface OllamaGeneration {
 
     data class Standard(
         val response: String
-    ) : OllamaGenerated
+    ) : OllamaGeneration
 }

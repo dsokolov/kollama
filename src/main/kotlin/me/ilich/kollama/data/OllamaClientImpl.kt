@@ -7,12 +7,13 @@ import me.ilich.kollama.domain.model.OllamaModelShort
 import me.ilich.kollama.domain.model.OllamaModelDetails
 import me.ilich.kollama.domain.model.OllamaModelName
 import me.ilich.kollama.domain.model.OllamaVersion
-import me.ilich.kollama.domain.model.OllamaGenerated
+import me.ilich.kollama.domain.model.OllamaGeneration
+import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaMessage
 
 internal class OllamaClientImpl(
     private val ollamaRestApi: OllamaRestApi,
     private val ollamaMapper: OllamaMapper,
-): OllamaClient {
+) : OllamaClient {
 
     override suspend fun version(): OllamaVersion {
         val versionResponse = ollamaRestApi.version()
@@ -25,7 +26,7 @@ internal class OllamaClientImpl(
         return ollamaMapper.map(tagsResponse)
     }
 
-    override suspend fun model(modelName: OllamaModelName, verbose: Boolean?) : OllamaModelDetails {
+    override suspend fun model(modelName: OllamaModelName, verbose: Boolean?): OllamaModelDetails {
         val showRequest = ollamaMapper.map(modelName, verbose)
         val showResponse = ollamaRestApi.show(showRequest)
         return ollamaMapper.map(showResponse)
@@ -35,7 +36,7 @@ internal class OllamaClientImpl(
         model: OllamaModelName,
         prompt: String,
         seed: Int?,
-    ): OllamaGenerated {
+    ): OllamaGeneration {
         val request = ollamaMapper.mapGenerateRequest(
             model = model,
             prompt = prompt,
@@ -44,5 +45,15 @@ internal class OllamaClientImpl(
         )
         val response = ollamaRestApi.generate(request)
         return ollamaMapper.mapGenerateResponse(response)
+    }
+
+    override suspend fun chat(model: OllamaModelName, messages: List<OllamaMessage>): OllamaMessage {
+        val request = ollamaMapper.mapChatRequest(
+            model = model,
+            messages = messages,
+            stream = false
+        )
+        val response = ollamaRestApi.chat(request)
+        return ollamaMapper.mapChatResponse(response)
     }
 }

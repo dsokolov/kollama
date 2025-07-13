@@ -7,16 +7,18 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import me.ilich.kollama.data.api.data.GenerateRequest
-import me.ilich.kollama.data.api.data.GenerateResponse
-import me.ilich.kollama.data.api.data.ShowRequest
-import me.ilich.kollama.data.api.data.ShowResponse
-import me.ilich.kollama.data.api.data.TagsResponse
-import me.ilich.kollama.data.api.data.VersionResponse
+import me.ilich.kollama.data.model.GenerateRequest
+import me.ilich.kollama.data.model.GenerateResponse
+import me.ilich.kollama.data.model.ShowRequest
+import me.ilich.kollama.data.model.ShowResponse
+import me.ilich.kollama.data.model.TagsResponse
+import me.ilich.kollama.data.model.VersionResponse
 import java.net.URI
 import io.ktor.http.*
+import me.ilich.kollama.me.ilich.kollama.data.model.ChatRequest
+import me.ilich.kollama.me.ilich.kollama.data.model.ChatResponse
 
-class OllamaRestApiKtorImpl(
+internal class OllamaRestApiKtorImpl(
     private val baseUri: URI
 ) : OllamaRestApi {
 
@@ -31,25 +33,34 @@ class OllamaRestApiKtorImpl(
         }
     }
 
-    private fun String.resolve(): String =
-        baseUri.resolve(this).toASCIIString()
-
-    override suspend fun tags(): TagsResponse =
-        client.get("/api/tags".resolve()).body()
-
     override suspend fun version(): VersionResponse =
         client.get("/api/version".resolve()).body()
 
-    override suspend fun generate(request: GenerateRequest): GenerateResponse {
-        return client.post("/api/generate".resolve()) {
-            contentType(ContentType.Application.Json)
-            setBody(request)
-        }.body()
-    }
+    override suspend fun tags(): TagsResponse =
+        client.get("/api/tags".resolve()).body()
 
     override suspend fun show(request: ShowRequest): ShowResponse =
         client.post("/api/show".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
+
+    override suspend fun generate(request: GenerateRequest): GenerateResponse =
+        client.post(
+            "/api/generate".resolve()
+        ) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    override suspend fun chat(request: ChatRequest): ChatResponse =
+        client.post(
+            "/api/chat".resolve()
+        ) {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body()
+
+    private fun String.resolve(): String =
+        baseUri.resolve(this).toASCIIString()
 }

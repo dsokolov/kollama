@@ -1,4 +1,4 @@
-package me.ilich.kollama.data.api.data
+package me.ilich.kollama.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
