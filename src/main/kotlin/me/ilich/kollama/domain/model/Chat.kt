@@ -1,4 +1,7 @@
-package me.ilich.kollama.me.ilich.kollama.domain.model
+package me.ilich.kollama.domain.model
+
+import me.ilich.kollama.domain.model.ToolCall
+import me.ilich.kollama.domain.model.ToolName
 
 sealed class OllamaMessageRole {
 

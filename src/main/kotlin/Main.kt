@@ -1,8 +1,8 @@
 package me.ilich.kollama
 
 import kotlinx.coroutines.runBlocking
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaMessage
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaMessageRole
+import me.ilich.kollama.domain.model.OllamaMessage
+import me.ilich.kollama.domain.model.OllamaMessageRole
 
 fun main() = runBlocking {
     println("begin")

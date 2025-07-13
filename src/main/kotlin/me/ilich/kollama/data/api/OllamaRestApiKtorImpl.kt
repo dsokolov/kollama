@@ -2,21 +2,21 @@ package me.ilich.kollama.data.api
 
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import java.net.URI
 import kotlinx.serialization.json.Json
+import me.ilich.kollama.data.model.ChatRequest
+import me.ilich.kollama.data.model.ChatResponse
 import me.ilich.kollama.data.model.GenerateRequest
 import me.ilich.kollama.data.model.GenerateResponse
 import me.ilich.kollama.data.model.ShowRequest
 import me.ilich.kollama.data.model.ShowResponse
 import me.ilich.kollama.data.model.TagsResponse
 import me.ilich.kollama.data.model.VersionResponse
-import java.net.URI
-import io.ktor.http.*
-import me.ilich.kollama.me.ilich.kollama.data.model.ChatRequest
-import me.ilich.kollama.me.ilich.kollama.data.model.ChatResponse
 
 internal class OllamaRestApiKtorImpl(
     private val baseUri: URI

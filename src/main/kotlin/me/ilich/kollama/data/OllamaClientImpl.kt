@@ -3,12 +3,12 @@ package me.ilich.kollama.data
 import me.ilich.kollama.data.api.OllamaRestApi
 import me.ilich.kollama.data.mapper.OllamaMapper
 import me.ilich.kollama.domain.OllamaClient
-import me.ilich.kollama.domain.model.OllamaModelShort
+import me.ilich.kollama.domain.model.OllamaGeneration
+import me.ilich.kollama.domain.model.OllamaMessage
 import me.ilich.kollama.domain.model.OllamaModelDetails
 import me.ilich.kollama.domain.model.OllamaModelName
+import me.ilich.kollama.domain.model.OllamaModelShort
 import me.ilich.kollama.domain.model.OllamaVersion
-import me.ilich.kollama.domain.model.OllamaGeneration
-import me.ilich.kollama.me.ilich.kollama.domain.model.OllamaMessage
 
 internal class OllamaClientImpl(
     private val ollamaRestApi: OllamaRestApi,

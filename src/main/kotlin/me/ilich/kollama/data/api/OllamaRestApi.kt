@@ -1,8 +1,13 @@
 package me.ilich.kollama.data.api
 
-import me.ilich.kollama.data.model.*
-import me.ilich.kollama.me.ilich.kollama.data.model.ChatRequest
-import me.ilich.kollama.me.ilich.kollama.data.model.ChatResponse
+import me.ilich.kollama.data.model.ChatRequest
+import me.ilich.kollama.data.model.ChatResponse
+import me.ilich.kollama.data.model.GenerateRequest
+import me.ilich.kollama.data.model.GenerateResponse
+import me.ilich.kollama.data.model.ShowRequest
+import me.ilich.kollama.data.model.ShowResponse
+import me.ilich.kollama.data.model.TagsResponse
+import me.ilich.kollama.data.model.VersionResponse
 
 /**
  * https://github.com/ollama/ollama/blob/main/docs/api.md
