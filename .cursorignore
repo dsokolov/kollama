@@ -2,3 +2,5 @@
 .idea/
 .kotlin/
 build/
+*.class
+*.jar
