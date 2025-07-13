@@ -16,13 +16,16 @@ import me.ilich.kollama.domain.model.OllamaModelName
 import me.ilich.kollama.domain.model.OllamaModelShort
 import me.ilich.kollama.domain.model.OllamaVersion
 
+/**
+ * Implementation of OllamaMapper that handles conversion between data and domain models
+ */
 internal class OllamaMapperImpl : OllamaMapper {
 
     override fun map(versionResponse: VersionResponse): OllamaVersion =
-        versionResponse.version.let(::OllamaVersion)
+        OllamaVersion(versionResponse.version)
 
-    override fun map(versionResponse: TagsResponse): List<OllamaModelShort> =
-        versionResponse.models.map { model ->
+    override fun map(tagsResponse: TagsResponse): List<OllamaModelShort> =
+        tagsResponse.models.map { model ->
             OllamaModelShort(
                 name = OllamaModelName(model.name),
             )
@@ -50,13 +53,7 @@ internal class OllamaMapperImpl : OllamaMapper {
             model = model.model,
             prompt = prompt,
             stream = stream,
-            options = if (seed != null) {
-                GenerateRequest.Options(
-                    seed = seed
-                )
-            } else {
-                null
-            }
+            options = seed?.let { GenerateRequest.Options(seed = it) }
         )
 
     override fun mapGenerateResponse(response: GenerateResponse): OllamaGeneration =
@@ -74,7 +71,7 @@ internal class OllamaMapperImpl : OllamaMapper {
             stream = stream,
             messages = messages.map { message ->
                 ChatRequest.Message(
-                    role = message.role.let(::mapRoleToString),
+                    role = mapRoleToString(message.role),
                     content = message.content
                 )
             }
@@ -89,18 +86,18 @@ internal class OllamaMapperImpl : OllamaMapper {
             is OllamaMessageRole.Other -> role.role
         }
 
-    private fun mapStringToRole(s: String): OllamaMessageRole =
-        when (s) {
+    private fun mapStringToRole(roleString: String): OllamaMessageRole =
+        when (roleString) {
             "tool" -> OllamaMessageRole.Tool
             "user" -> OllamaMessageRole.User
             "assistant" -> OllamaMessageRole.Assistant
             "system" -> OllamaMessageRole.System
-            else -> OllamaMessageRole.Other(s)
+            else -> OllamaMessageRole.Other(roleString)
         }
 
     override fun mapChatResponse(response: ChatResponse): OllamaMessage =
         OllamaMessage(
-            role = response.message.role.let(::mapStringToRole),
+            role = mapStringToRole(response.message.role),
             content = response.message.content
         )
 }

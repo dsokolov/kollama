@@ -15,11 +15,14 @@ import me.ilich.kollama.domain.model.OllamaModelName
 import me.ilich.kollama.domain.model.OllamaModelShort
 import me.ilich.kollama.domain.model.OllamaVersion
 
+/**
+ * Interface for mapping between data layer models and domain models
+ */
 interface OllamaMapper {
 
     fun map(versionResponse: VersionResponse): OllamaVersion
 
-    fun map(versionResponse: TagsResponse): List<OllamaModelShort>
+    fun map(tagsResponse: TagsResponse): List<OllamaModelShort>
 
     fun map(name: OllamaModelName, verbose: Boolean? = null): ShowRequest
 
@@ -33,6 +36,7 @@ interface OllamaMapper {
     ): GenerateRequest
 
     fun mapGenerateResponse(response: GenerateResponse): OllamaGeneration
+    
     fun mapChatRequest(
         model: OllamaModelName,
         messages: List<OllamaMessage>,

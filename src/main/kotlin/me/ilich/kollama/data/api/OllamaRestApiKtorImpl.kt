@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -31,18 +32,31 @@ import me.ilich.kollama.data.model.ShowResponse
 import me.ilich.kollama.data.model.TagsResponse
 import me.ilich.kollama.data.model.VersionResponse
 
+/**
+ * Ktor-based implementation of Ollama REST API client
+ * 
+ * @param baseUri The base URI of the Ollama server
+ */
 internal class OllamaRestApiKtorImpl(
     private val baseUri: URI
 ) : OllamaRestApi {
 
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
-        }
-        install(HttpTimeout) {
-            requestTimeoutMillis = 120_000 // 2 минуты
-            connectTimeoutMillis = 60_000
-            socketTimeoutMillis = 120_000
+    private val client by lazy {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json { 
+                    ignoreUnknownKeys = true 
+                    isLenient = true
+                })
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = 120_000 // 2 minutes
+                connectTimeoutMillis = 60_000
+                socketTimeoutMillis = 120_000
+            }
+            install(Logging) {
+                level = io.ktor.client.plugins.logging.LogLevel.INFO
+            }
         }
     }
 
@@ -59,17 +73,13 @@ internal class OllamaRestApiKtorImpl(
         }.body()
 
     override suspend fun generate(request: GenerateRequest): GenerateResponse =
-        client.post(
-            "/api/generate".resolve()
-        ) {
+        client.post("/api/generate".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
 
     override suspend fun chat(request: ChatRequest): ChatResponse =
-        client.post(
-            "/api/chat".resolve()
-        ) {
+        client.post("/api/chat".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
