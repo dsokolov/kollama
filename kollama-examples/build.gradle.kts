@@ -5,7 +5,7 @@ plugins {
 }
 
 application {
-    mainClass.set("me.ilich.kollama.examples.MainKt")
+    mainClass.set("io.github.dsokolov.kollama.examples.MainKt")
 }
 
 dependencies {

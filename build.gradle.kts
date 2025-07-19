@@ -14,7 +14,7 @@ if (secretsFile.exists()) {
 }
 
 allprojects {
-    group = "me.ilich.kollama"
+    group = "io.github.dsokolov"
     version = "1.0.0"
     
     repositories {

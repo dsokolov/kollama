@@ -55,7 +55,7 @@ publishing {
             pom {
                 name.set("Kollama")
                 description.set("Kotlin client library for Ollama API")
-                url.set("https://github.com/ilich/kollama")
+                url.set("https://github.com/dsokolov/kollama")
                 
                 licenses {
                     license {
@@ -66,16 +66,16 @@ publishing {
                 
                 developers {
                     developer {
-                        id.set("ilich")
+                        id.set("dsokolov")
                         name.set("Dmitry I. Sokolov")
                         email.set("d.i.sokolov@vk.com")
                     }
                 }
                 
                 scm {
-                    connection.set("scm:git:git://github.com/ilich/kollama.git")
-                    developerConnection.set("scm:git:ssh://github.com:ilich/kollama.git")
-                    url.set("https://github.com/ilich/kollama")
+                    connection.set("scm:git:git://github.com/dsokolov/kollama.git")
+                    developerConnection.set("scm:git:ssh://github.com:dsokolov/kollama.git")
+                    url.set("https://github.com/dsokolov/kollama")
                 }
             }
         }
