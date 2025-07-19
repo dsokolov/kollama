@@ -1,8 +1,9 @@
-package me.ilich.kollama
+package me.ilich.kollama.examples
 
 import kotlinx.coroutines.runBlocking
 import me.ilich.kollama.domain.model.OllamaMessage
 import me.ilich.kollama.domain.model.OllamaMessageRole
+import me.ilich.kollama.ollama
 
 /**
  * Main entry point for the Kollama application
@@ -54,4 +55,4 @@ private fun println(message: OllamaMessage) {
     print(": ")
     print(message.content)
     println()
-}
+} 
