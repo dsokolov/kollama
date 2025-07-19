@@ -2,6 +2,8 @@ plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
     `java-library`
+    `maven-publish`
+    signing
 }
 
 dependencies {
@@ -33,4 +35,71 @@ tasks.test {
 
 kotlin {
     jvmToolchain(21)
+}
+
+// POM metadata
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+            
+            pom {
+                name.set("Kollama")
+                description.set("Kotlin client library for Ollama API")
+                url.set("https://github.com/ilich/kollama")
+                
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id.set("ilich")
+                        name.set("Dmitry I. Sokolov")
+                        email.set("d.i.sokolov@vk.com")
+                    }
+                }
+                
+                scm {
+                    connection.set("scm:git:git://github.com/ilich/kollama.git")
+                    developerConnection.set("scm:git:ssh://github.com:ilich/kollama.git")
+                    url.set("https://github.com/ilich/kollama")
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            name = "CentralPublishingPortal"
+            url = uri("https://central.sonatype.com/api/v1/publisher")
+            credentials {
+                username = project.findProperty("centralUsername") as String?
+                password = project.findProperty("centralPassword") as String?
+            }
+        }
+    }
+}
+
+signing {
+    val signingKeyId = project.findProperty("signing.keyId") as String?
+    val signingPassword = project.findProperty("signing.password") as String?
+    val signingSecretKeyRingFile = project.findProperty("signing.secretKeyRingFile") as String?
+    
+    if (signingKeyId != null) {
+        useInMemoryPgpKeys(signingKeyId, signingSecretKeyRingFile, signingPassword)
+        sign(publishing.publications["maven"])
+    }
 } 

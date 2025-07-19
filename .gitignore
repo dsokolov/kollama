@@ -2,3 +2,7 @@
 .idea/
 .kotlin/
 build/
+secrets/
+
+gradle-secrets.properties
+
