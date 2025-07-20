@@ -58,6 +58,7 @@ publishing {
             artifactId = "kollama"
 
             pom {
+                name.set("kollama")
                 description.set(project.description)
                 url.set("https://github.com/dsokolov/kollama")
                 issueManagement {

@@ -25,16 +25,24 @@ fun main() = runBlocking {
             val firstModel = availableModels.first().name
             println("Using model: ${firstModel.model}")
 
-            // Create a simple chat message
+            val systemMessage = OllamaMessage(
+                role = OllamaMessageRole.System,
+                content = "Ты говоришь только по-русски."
+            )
+
             val userMessage = OllamaMessage(
                 role = OllamaMessageRole.User,
                 content = "Привет! Как жизнь?"
             )
             
             println(userMessage)
+            val messages = listOf(
+                systemMessage,
+                userMessage
+            )
             
             // Get response from the model
-            val assistantResponse = ollamaClient.getCompletions().chat(firstModel, listOf(userMessage))
+            val assistantResponse = ollamaClient.getCompletions().chat(firstModel, messages)
             println(assistantResponse)
         } else {
             println("No models available")
