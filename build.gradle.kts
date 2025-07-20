@@ -1,3 +1,7 @@
+plugins {
+
+}
+
 val secretsFile = file("gradle-secrets.properties")
 if (secretsFile.exists()) {
     val secrets = java.util.Properties()

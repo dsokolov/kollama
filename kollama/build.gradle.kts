@@ -1,3 +1,5 @@
+import org.jreleaser.model.Active
+
 plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
@@ -5,6 +7,10 @@ plugins {
     `maven-publish`
     id("org.jreleaser") version "1.19.0"
 }
+
+group = properties["GROUP"].toString()
+version = properties["VERSION_NAME"].toString()
+description = "Ollama Kotlin Library"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -47,6 +53,36 @@ publishing {
     publications {
         create<MavenPublication>("release") {
             from(components["java"])
+
+            groupId = project.group.toString()
+            artifactId = "kollama"
+
+            pom {
+                description.set(project.description)
+                url.set("https://github.com/dsokolov/kollama")
+                issueManagement {
+                    url.set("https://github.com/dsokolov/kollama/issues")
+                }
+                scm {
+                    url.set("https://github.com/dsokolov/kollama")
+                    connection.set("scm:git://github.com/dsokolov/kollama.git")
+                    developerConnection.set("scm:git://github.com/dsokolov/kollama.git")
+                }
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("http://www.opensource.org/licenses/mit-license.php")
+                        distribution.set("repo")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("ilichme")
+                        name.set("Dmitry I. Sokolov")
+                        email.set("d.i.sokolov@vk.com")
+                    }
+                }
+            }
         }
     }
     repositories {
@@ -57,10 +93,32 @@ publishing {
 }
 
 jreleaser {
+    project {
+        inceptionYear = "2025"
+        author("Dmitry I. Sokolov")
+    }
     release {
         github {
             skipRelease = true
             skipTag = true
         }
     }
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        verify = true
+    }
+    deploy {
+        maven {
+            mavenCentral.create("sonatype") {
+                active = Active.ALWAYS
+                verifyPom = false
+                url = "https://central.sonatype.com/api/v1/publisher"
+                retryDelay = 60
+                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                setAuthorization("Basic")
+            }
+        }
+    }
+    gitRootSearch = true
 }

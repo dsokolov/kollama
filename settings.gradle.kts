@@ -5,4 +5,3 @@ rootProject.name = "kollama"
 
 include("kollama")
 include("kollama-examples")
-
