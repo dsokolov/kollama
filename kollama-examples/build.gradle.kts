@@ -9,7 +9,8 @@ application {
 }
 
 dependencies {
-    implementation(project(":kollama"))
+    //implementation(project(":kollama"))
+    implementation("io.github.dsokolov:kollama:0.1.0-SNAPSHOT")
     
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")

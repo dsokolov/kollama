@@ -1,9 +1,3 @@
-plugins {
-    kotlin("jvm") version "2.0.0" apply false
-    kotlin("plugin.serialization") version "2.0.0" apply false
-}
-
-// Load secrets from separate file if it exists
 val secretsFile = file("gradle-secrets.properties")
 if (secretsFile.exists()) {
     val secrets = java.util.Properties()
@@ -14,10 +8,8 @@ if (secretsFile.exists()) {
 }
 
 allprojects {
-    group = "io.github.dsokolov"
-    version = "1.0.0"
-    
     repositories {
         mavenCentral()
+        mavenLocal()
     }
 }
