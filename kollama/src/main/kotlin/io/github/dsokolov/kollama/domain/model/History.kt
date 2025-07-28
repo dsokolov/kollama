@@ -9,7 +9,9 @@ operator fun History.plus(message: Message) =
         messages = this.messages + message
     )
 
-fun history(block: HistoryCreateContext.() -> Unit): History {
+fun emptyHistory() = History(emptyList())
+
+fun history(block: HistoryCreateContext.() -> Unit = {}): History {
     val context = HistoryCreateContext()
     context.block()
     val messages = context.messages

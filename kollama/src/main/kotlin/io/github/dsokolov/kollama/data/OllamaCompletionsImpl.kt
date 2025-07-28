@@ -11,7 +11,7 @@ import io.github.dsokolov.kollama.domain.model.Seed
 
 class OllamaCompletionsImpl(
     private val modelName: OllamaModelName,
-    private val isStream : Boolean,
+    private val isStream: Boolean,
     private val ollamaRestApi: OllamaRestApi,
     private val ollamaMapper: OllamaMapper,
 ) : OllamaCompletions {
@@ -36,12 +36,17 @@ class OllamaCompletionsImpl(
 
     override suspend fun chat(
         history: History,
+        message: Message?,
         seed: Seed?,
     ): Message {
+        val messages = when (message) {
+            null -> history.messages
+            else -> history.messages + message
+        }
         return try {
             val request = ollamaMapper.mapChatRequest(
                 model = modelName,
-                messages = history.messages,
+                messages = messages,
                 stream = isStream,
                 seed = seed,
             )

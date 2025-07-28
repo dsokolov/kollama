@@ -1,9 +1,8 @@
-package io.github.dsokolov.kollama.examples.textCompare
+package io.github.dsokolov.kollama.examples
 
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.Seed
 import io.github.dsokolov.kollama.domain.model.history
-import io.github.dsokolov.kollama.examples.readResourceFile
 import io.github.dsokolov.kollama.ollama
 import kotlinx.coroutines.runBlocking
 
