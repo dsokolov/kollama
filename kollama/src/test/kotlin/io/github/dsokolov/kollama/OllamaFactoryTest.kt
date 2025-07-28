@@ -1,6 +1,5 @@
 package io.github.dsokolov.kollama
 
-import io.github.dsokolov.kollama.domain.OllamaClient
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.net.URI
@@ -13,7 +12,7 @@ class OllamaFactoryTest {
         
         assertNotNull(client)
         assertNotNull(client.getManipulations())
-        assertNotNull(client.getCompletions())
+        assertNotNull(client.getCompletions(model))
     }
 
     @Test
@@ -23,7 +22,7 @@ class OllamaFactoryTest {
         
         assertNotNull(client)
         assertNotNull(client.getManipulations())
-        assertNotNull(client.getCompletions())
+        assertNotNull(client.getCompletions(model))
     }
 
     @Test

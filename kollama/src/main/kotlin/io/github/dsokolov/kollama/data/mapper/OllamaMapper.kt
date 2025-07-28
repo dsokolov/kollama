@@ -9,11 +9,12 @@ import io.github.dsokolov.kollama.data.model.ShowResponse
 import io.github.dsokolov.kollama.data.model.TagsResponse
 import io.github.dsokolov.kollama.data.model.VersionResponse
 import io.github.dsokolov.kollama.domain.model.OllamaGeneration
-import io.github.dsokolov.kollama.domain.model.OllamaMessage
+import io.github.dsokolov.kollama.domain.model.Message
 import io.github.dsokolov.kollama.domain.model.OllamaModelDetails
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.OllamaModelShort
 import io.github.dsokolov.kollama.domain.model.OllamaVersion
+import io.github.dsokolov.kollama.domain.model.Seed
 
 /**
  * Interface for mapping between data layer models and domain models
@@ -36,12 +37,13 @@ interface OllamaMapper {
     ): GenerateRequest
 
     fun mapGenerateResponse(response: GenerateResponse): OllamaGeneration
-    
+
     fun mapChatRequest(
         model: OllamaModelName,
-        messages: List<OllamaMessage>,
+        messages: List<Message>,
         stream: Boolean,
+        seed: Seed? = null,
     ): ChatRequest
 
-    fun mapChatResponse(response: ChatResponse): OllamaMessage
+    fun mapChatResponse(response: ChatResponse): Message
 }

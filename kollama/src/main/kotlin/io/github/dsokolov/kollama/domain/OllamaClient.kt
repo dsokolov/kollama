@@ -1,13 +1,6 @@
 package io.github.dsokolov.kollama.domain
 
-import io.github.dsokolov.kollama.domain.model.OllamaGeneration
-import io.github.dsokolov.kollama.domain.model.OllamaMessage
-import io.github.dsokolov.kollama.domain.model.OllamaModelDetails
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
-import io.github.dsokolov.kollama.domain.model.OllamaModelShort
-import io.github.dsokolov.kollama.domain.model.OllamaVersion
-import io.github.dsokolov.kollama.domain.OllamaCompletions
-import io.github.dsokolov.kollama.domain.OllamaManipulations
 
 /**
  * Client interface for interacting with Ollama API
@@ -17,10 +10,12 @@ import io.github.dsokolov.kollama.domain.OllamaManipulations
  */
 abstract class OllamaClient(
     protected val ollamaManipulations: OllamaManipulations,
-    protected val ollamaCompletions: OllamaCompletions,
 ) {
 
     fun getManipulations(): OllamaManipulations = ollamaManipulations
 
-    fun getCompletions(): OllamaCompletions = ollamaCompletions
+    abstract fun getCompletions(
+        model: OllamaModelName,
+        isStream: Boolean = false,
+    ): OllamaCompletions
 }

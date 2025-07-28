@@ -1,13 +1,14 @@
 package io.github.dsokolov.kollama.examples
 
 import kotlinx.coroutines.runBlocking
-import io.github.dsokolov.kollama.domain.model.OllamaMessage
-import io.github.dsokolov.kollama.domain.model.OllamaMessageRole
+import io.github.dsokolov.kollama.domain.model.Message
+import io.github.dsokolov.kollama.domain.model.MessageRole
+import io.github.dsokolov.kollama.domain.model.history
 import io.github.dsokolov.kollama.ollama
 
 /**
  * Main entry point for the Kollama application
- * 
+ *
  * This function demonstrates basic usage of the Ollama client
  * by listing available models and performing a simple chat interaction.
  */
@@ -20,29 +21,18 @@ fun main() = runBlocking {
         // Get available models
         val availableModels = ollamaClient.getManipulations().models()
         println("Available models: ${availableModels.size}")
-        
+
         if (availableModels.isNotEmpty()) {
             val firstModel = availableModels.first().name
             println("Using model: ${firstModel.model}")
 
-            val systemMessage = OllamaMessage(
-                role = OllamaMessageRole.System,
-                content = "Ты говоришь только по-русски."
-            )
+            val messages = history {
+                system("Ты говоришь только по-русски.")
+                user("Привет! Как жизнь?")
+            }
 
-            val userMessage = OllamaMessage(
-                role = OllamaMessageRole.User,
-                content = "Привет! Как жизнь?"
-            )
-            
-            println(userMessage)
-            val messages = listOf(
-                systemMessage,
-                userMessage
-            )
-            
             // Get response from the model
-            val assistantResponse = ollamaClient.getCompletions().chat(firstModel, messages)
+            val assistantResponse = ollamaClient.getCompletions(firstModel).chat(messages)
             println(assistantResponse)
         } else {
             println("No models available")
@@ -58,7 +48,7 @@ fun main() = runBlocking {
 /**
  * Helper function to print OllamaMessage in a readable format
  */
-private fun println(message: OllamaMessage) {
+private fun println(message: Message) {
     print(message.role)
     print(": ")
     print(message.content)

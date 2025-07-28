@@ -8,11 +8,17 @@ data class ChatRequest(
     @SerialName("model") val model: String,
     @SerialName("messages") val messages: List<Message>,
     @SerialName("stream") val stream: Boolean,
+    @SerialName("options") val options: Options? = null,
 ) {
 
     @Serializable
     data class Message(
         @SerialName("role") val role: String,
         @SerialName("content") val content: String
+    )
+
+    @Serializable
+    data class Options(
+        val seed: Int? = null,
     )
 }
