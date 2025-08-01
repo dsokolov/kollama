@@ -5,6 +5,7 @@ import io.github.dsokolov.kollama.data.mapper.OllamaMapper
 import io.github.dsokolov.kollama.domain.OllamaClient
 import io.github.dsokolov.kollama.domain.OllamaCompletions
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
+import io.github.dsokolov.kollama.logger.Logger
 
 /**
  * Implementation of OllamaClient that handles communication with Ollama server
@@ -13,26 +14,10 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
  * @param ollamaMapper The mapper for converting between data and domain models
  */
 internal class OllamaClientImpl(
-    private val ollamaRestApi: OllamaRestApi,
-    private val ollamaMapper: OllamaMapper,
-) : OllamaClient(
-    ollamaManipulations = OllamaManipulationsImpl(
-        ollamaRestApi = ollamaRestApi,
-        ollamaMapper = ollamaMapper,
-    ),
-) {
-    override fun getCompletions(
-        model: OllamaModelName,
-        isStream: Boolean,
-    ): OllamaCompletions {
-        return OllamaCompletionsImpl(
-            modelName = model,
-            isStream = isStream,
-            ollamaRestApi = ollamaRestApi,
-            ollamaMapper = ollamaMapper,
-        )
-    }
-}
+    override val restApi: OllamaRestApi,
+    override val mapper: OllamaMapper,
+    override val logger: Logger?,
+) : OllamaClient
 
 /**
  * Custom exception for Ollama-related errors

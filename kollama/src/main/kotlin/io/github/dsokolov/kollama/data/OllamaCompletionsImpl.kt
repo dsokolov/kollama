@@ -8,12 +8,14 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.OllamaCompletions
 import io.github.dsokolov.kollama.domain.model.History
 import io.github.dsokolov.kollama.domain.model.Seed
+import io.github.dsokolov.kollama.logger.Logger
 
 class OllamaCompletionsImpl(
     private val modelName: OllamaModelName,
     private val isStream: Boolean,
     private val ollamaRestApi: OllamaRestApi,
     private val ollamaMapper: OllamaMapper,
+    private val logger: Logger?,
 ) : OllamaCompletions {
 
     override suspend fun generate(
@@ -30,7 +32,7 @@ class OllamaCompletionsImpl(
             val response = ollamaRestApi.generate(request)
             ollamaMapper.mapGenerateResponse(response)
         } catch (e: Exception) {
-            throw OllamaException("Failed to generate text for model ${modelName.model}", e)
+            throw OllamaException("Failed to generate text for model $modelName", e)
         }
     }
 
@@ -53,14 +55,14 @@ class OllamaCompletionsImpl(
             val response = ollamaRestApi.chat(request)
             ollamaMapper.mapChatResponse(response)
         } catch (e: Exception) {
-            throw OllamaException("Failed to chat with model ${modelName.model}", e)
+            throw OllamaException("Failed to chat with model $modelName", e)
         }
     }
 
     override suspend fun embeddings(prompt: String): List<Double> {
         return try {
             val request = io.github.dsokolov.kollama.data.model.EmbeddingsRequest(
-                model = modelName.model,
+                model = modelName,
                 prompt = prompt
             )
             val response = ollamaRestApi.embeddings(request)

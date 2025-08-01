@@ -1,8 +1,7 @@
 package io.github.dsokolov.kollama.domain.model
 
 
-@JvmInline
-value class OllamaModelName(val model: String)
+typealias OllamaModelName = String
 
 data class OllamaModelShort(
     val name: OllamaModelName

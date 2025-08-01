@@ -28,13 +28,13 @@ internal class OllamaMapperImpl : OllamaMapper {
     override fun map(tagsResponse: TagsResponse): List<OllamaModelShort> =
         tagsResponse.models.map { model ->
             OllamaModelShort(
-                name = OllamaModelName(model.name),
+                name = model.name,
             )
         }
 
     override fun map(name: OllamaModelName, verbose: Boolean?): ShowRequest =
         ShowRequest(
-            model = name.model,
+            model = name,
             verbose = verbose,
         )
 
@@ -51,7 +51,7 @@ internal class OllamaMapperImpl : OllamaMapper {
         seed: Int?
     ): GenerateRequest =
         GenerateRequest(
-            model = model.model,
+            model = model,
             prompt = prompt,
             stream = stream,
             options = seed?.let { GenerateRequest.Options(seed = it) }
@@ -69,7 +69,7 @@ internal class OllamaMapperImpl : OllamaMapper {
         seed: Seed?,
     ): ChatRequest =
         ChatRequest(
-            model = model.model,
+            model = model,
             stream = stream,
             messages = messages.map { message ->
                 ChatRequest.Message(

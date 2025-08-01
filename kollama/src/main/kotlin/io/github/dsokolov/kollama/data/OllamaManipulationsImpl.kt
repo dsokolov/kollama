@@ -38,7 +38,7 @@ internal class OllamaManipulationsImpl(
             val showResponse = ollamaRestApi.show(showRequest)
             ollamaMapper.map(showResponse)
         } catch (e: Exception) {
-            throw OllamaException("Failed to get model details for ${modelName.model}", e)
+            throw OllamaException("Failed to get model details for $modelName", e)
         }
     }
 

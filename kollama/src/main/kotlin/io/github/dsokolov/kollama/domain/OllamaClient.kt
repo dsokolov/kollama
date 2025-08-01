@@ -1,6 +1,9 @@
 package io.github.dsokolov.kollama.domain
 
+import io.github.dsokolov.kollama.data.api.OllamaRestApi
+import io.github.dsokolov.kollama.data.mapper.OllamaMapper
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
+import io.github.dsokolov.kollama.logger.Logger
 
 /**
  * Client interface for interacting with Ollama API
@@ -8,14 +11,8 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
  * This interface provides methods to interact with the Ollama server,
  * including model management, text generation, and chat functionality.
  */
-abstract class OllamaClient(
-    protected val ollamaManipulations: OllamaManipulations,
-) {
-
-    fun getManipulations(): OllamaManipulations = ollamaManipulations
-
-    abstract fun getCompletions(
-        model: OllamaModelName,
-        isStream: Boolean = false,
-    ): OllamaCompletions
+interface OllamaClient {
+    val restApi: OllamaRestApi
+    val mapper: OllamaMapper
+    val logger: Logger?
 }

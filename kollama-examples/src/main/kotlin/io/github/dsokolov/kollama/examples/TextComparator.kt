@@ -1,5 +1,6 @@
 package io.github.dsokolov.kollama.examples
 
+import io.github.dsokolov.kollama.completions
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.Seed
 import io.github.dsokolov.kollama.domain.model.history
@@ -20,7 +21,7 @@ class TextComparatorApp(
     }
 
     private val ollama = ollama()
-    private val completions = ollama.getCompletions(model)
+    private val completions = ollama.completions(model)
 
     suspend fun run(
         text1: String,
@@ -51,7 +52,7 @@ class TextComparatorApp(
 
 fun main() = runBlocking {
     //val model = OllamaModelName("gurubot/TopicalStorm-uncensored:latest")
-    val model = OllamaModelName("deepseek-r1:1.5b")
+    val model = "deepseek-r1:1.5b"
     val app = TextComparatorApp(model)
     val text1 = "Жара"
     val text2 = "boat"

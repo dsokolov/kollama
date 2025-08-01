@@ -31,23 +31,25 @@ import io.github.dsokolov.kollama.data.model.ShowRequest
 import io.github.dsokolov.kollama.data.model.ShowResponse
 import io.github.dsokolov.kollama.data.model.TagsResponse
 import io.github.dsokolov.kollama.data.model.VersionResponse
+import io.github.dsokolov.kollama.logger.Logger
 
 /**
  * Ktor-based implementation of Ollama REST API client
- * 
+ *
  * @param baseUri The base URI of the Ollama server
  * @param httpClient Необязательный кастомный HttpClient (для тестов)
  */
 internal class OllamaRestApiKtorImpl(
     private val baseUri: URI,
-    private val httpClient: HttpClient? = null
+    private val httpClient: HttpClient? = null,
+    private val logger: Logger? = null,
 ) : OllamaRestApi {
 
     private val client: HttpClient by lazy {
         httpClient ?: HttpClient {
             install(ContentNegotiation) {
-                json(Json { 
-                    ignoreUnknownKeys = true 
+                json(Json {
+                    ignoreUnknownKeys = true
                     isLenient = true
                 })
             }
@@ -57,7 +59,13 @@ internal class OllamaRestApiKtorImpl(
                 socketTimeoutMillis = 120_000
             }
             install(Logging) {
-                level = io.ktor.client.plugins.logging.LogLevel.INFO
+                level = LogLevel.ALL
+                logger = object : io.ktor.client.plugins.logging.Logger {
+                    override fun log(message: String) {
+                        this@OllamaRestApiKtorImpl.logger?.i(message)
+                    }
+
+                }
             }
         }
     }

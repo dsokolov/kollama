@@ -1,9 +1,11 @@
 package io.github.dsokolov.kollama.examples
 
+import io.github.dsokolov.kollama.completions
 import kotlinx.coroutines.runBlocking
 import io.github.dsokolov.kollama.domain.model.Message
 import io.github.dsokolov.kollama.domain.model.MessageRole
 import io.github.dsokolov.kollama.domain.model.history
+import io.github.dsokolov.kollama.manipulations
 import io.github.dsokolov.kollama.ollama
 
 /**
@@ -19,12 +21,12 @@ fun main() = runBlocking {
 
     try {
         // Get available models
-        val availableModels = ollamaClient.getManipulations().models()
+        val availableModels = ollamaClient.manipulations().models()
         println("Available models: ${availableModels.size}")
 
         if (availableModels.isNotEmpty()) {
             val firstModel = availableModels.first().name
-            println("Using model: ${firstModel.model}")
+            println("Using model: $firstModel")
 
             val messages = history {
                 system("Ты говоришь только по-русски.")
@@ -32,7 +34,7 @@ fun main() = runBlocking {
             }
 
             // Get response from the model
-            val assistantResponse = ollamaClient.getCompletions(firstModel).chat(messages)
+            val assistantResponse = ollamaClient.completions(firstModel).chat(messages)
             println(assistantResponse)
         } else {
             println("No models available")
