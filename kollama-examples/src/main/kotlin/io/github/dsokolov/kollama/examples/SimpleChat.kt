@@ -90,7 +90,7 @@ fun main() = runBlocking {
     }
     val app = SimpleChatApp(
         model = model,
-        systemPrompt = readResourceFile("volk_system_prompt.txt"),
+        systemPrompt = readResourceFile("system_prompt.txt"),
         callback = callback
     )
     app.start(1000)

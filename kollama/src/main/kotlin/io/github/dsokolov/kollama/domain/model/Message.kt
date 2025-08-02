@@ -22,3 +22,9 @@ sealed class MessageRole {
 }
 
 typealias MessageContent = String
+
+fun assistant(content: MessageContent) =
+    Message(
+        role = MessageRole.Assistant,
+        content = content,
+    )

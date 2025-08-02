@@ -36,4 +36,11 @@ class HistoryCreateContext {
         )
         messages.add(msg)
     }
+
+    fun assistant(content: MessageContent) {
+        val msg = Message(
+            role = MessageRole.Assistant,
+            content = content,
+        )
+    }
 }
