@@ -1,5 +1,6 @@
 package io.github.dsokolov.kollama.data.api
 
+import io.github.dsokolov.kollama.data.OllamaException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -32,6 +33,7 @@ import io.github.dsokolov.kollama.data.model.ShowResponse
 import io.github.dsokolov.kollama.data.model.TagsResponse
 import io.github.dsokolov.kollama.data.model.VersionResponse
 import io.github.dsokolov.kollama.logger.Logger
+import io.github.dsokolov.kollama.data.model.ErrorResponse
 
 /**
  * Ktor-based implementation of Ollama REST API client
@@ -64,72 +66,113 @@ internal class OllamaRestApiKtorImpl(
                     override fun log(message: String) {
                         this@OllamaRestApiKtorImpl.logger?.i(message)
                     }
-
                 }
             }
         }
     }
 
-    override suspend fun version(): VersionResponse =
-        client.get("/api/version".resolve()).body()
+    override suspend fun version(): VersionResponse {
+        val response = client.get("/api/version".resolve())
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun tags(): TagsResponse =
-        client.get("/api/tags".resolve()).body()
+    override suspend fun tags(): TagsResponse {
+        val response = client.get("/api/tags".resolve())
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun show(request: ShowRequest): ShowResponse =
-        client.post("/api/show".resolve()) {
+    override suspend fun show(request: ShowRequest): ShowResponse {
+        val response = client.post("/api/show".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun generate(request: GenerateRequest): GenerateResponse =
-        client.post("/api/generate".resolve()) {
+    override suspend fun generate(request: GenerateRequest): GenerateResponse {
+        val response = client.post("/api/generate".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun chat(request: ChatRequest): ChatResponse =
-        client.post("/api/chat".resolve()) {
+    override suspend fun chat(request: ChatRequest): ChatResponse {
+        val response = client.post("/api/chat".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun pull(request: PullRequest): PullResponse =
-        client.post("/api/pull".resolve()) {
+    override suspend fun pull(request: PullRequest): PullResponse {
+        val response = client.post("/api/pull".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun push(request: PushRequest): PushResponse =
-        client.post("/api/push".resolve()) {
+    override suspend fun push(request: PushRequest): PushResponse {
+        val response = client.post("/api/push".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun create(request: CreateRequest): CreateResponse =
-        client.post("/api/create".resolve()) {
+    override suspend fun create(request: CreateRequest): CreateResponse {
+        val response = client.post("/api/create".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun copy(request: CopyRequest): CopyResponse =
-        client.post("/api/copy".resolve()) {
+    override suspend fun copy(request: CopyRequest): CopyResponse {
+        val response = client.post("/api/copy".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun delete(request: DeleteRequest): DeleteResponse =
-        client.delete("/api/delete".resolve()) {
+    override suspend fun delete(request: DeleteRequest): DeleteResponse {
+        val response = client.delete("/api/delete".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
-    override suspend fun embeddings(request: EmbeddingsRequest): EmbeddingsResponse =
-        client.post("/api/embeddings".resolve()) {
+    override suspend fun embeddings(request: EmbeddingsRequest): EmbeddingsResponse {
+        val response = client.post("/api/embeddings".resolve()) {
             contentType(ContentType.Application.Json)
             setBody(request)
-        }.body()
+        }
+        processHttpError(response)
+        return response.body()
+    }
 
     private fun String.resolve(): String =
         baseUri.resolve(this).toASCIIString()
+
+    private suspend fun processHttpError(response: HttpResponse) {
+        if (!response.status.isSuccess()) {
+            val errorBody = response.body<ErrorResponse>()
+            throw OllamaException(
+                message = errorBody.error
+            )
+        }
+    }
 }

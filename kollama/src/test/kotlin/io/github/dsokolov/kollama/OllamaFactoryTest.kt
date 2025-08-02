@@ -3,6 +3,7 @@ package io.github.dsokolov.kollama
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.net.URI
+import io.github.dsokolov.kollama.domain.model.OllamaModelName
 
 class OllamaFactoryTest {
 
@@ -11,8 +12,8 @@ class OllamaFactoryTest {
         val client = ollama()
         
         assertNotNull(client)
-        assertNotNull(client.getManipulations())
-        assertNotNull(client.getCompletions(model))
+        assertNotNull(client.manipulations())
+        assertNotNull(client.completions("llama2"))
     }
 
     @Test
@@ -21,8 +22,8 @@ class OllamaFactoryTest {
         val client = ollama(uri = customUri)
         
         assertNotNull(client)
-        assertNotNull(client.getManipulations())
-        assertNotNull(client.getCompletions(model))
+        assertNotNull(client.manipulations())
+        assertNotNull(client.completions("llama2"))
     }
 
     @Test

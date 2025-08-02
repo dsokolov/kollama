@@ -5,6 +5,7 @@ import io.github.dsokolov.kollama.domain.model.OllamaGeneration
 import io.github.dsokolov.kollama.domain.model.Message
 import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.Seed
+import io.github.dsokolov.kollama.domain.model.Tool
 import io.github.dsokolov.kollama.domain.model.emptyHistory
 
 interface OllamaCompletions {
@@ -24,13 +25,17 @@ interface OllamaCompletions {
     /**
      * Send a chat message and get a response
      *
-     * @param messages List of chat messages
+     * @param history Chat history
+     * @param message Optional additional message
+     * @param seed Optional seed for reproducible results
+     * @param tools Optional list of tools available to the model
      * @return The assistant's response message
      */
     suspend fun chat(
         history: History = emptyHistory(),
         message: Message? = null,
         seed: Seed? = null,
+        tools: List<Tool>? = null,
     ): Message
 
     /**

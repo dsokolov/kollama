@@ -10,4 +10,5 @@ data class OllamaModelShort(
 data class OllamaModelDetails(
     val modelFile: String?,
     val parameters: String?,
+    val capabilities: List<String>?,
 )

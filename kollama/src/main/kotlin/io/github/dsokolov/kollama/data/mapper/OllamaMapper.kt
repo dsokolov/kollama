@@ -15,6 +15,7 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.OllamaModelShort
 import io.github.dsokolov.kollama.domain.model.OllamaVersion
 import io.github.dsokolov.kollama.domain.model.Seed
+import io.github.dsokolov.kollama.domain.model.Tool
 
 /**
  * Interface for mapping between data layer models and domain models
@@ -43,6 +44,7 @@ interface OllamaMapper {
         messages: List<Message>,
         stream: Boolean,
         seed: Seed? = null,
+        tools: List<Tool>? = null,
     ): ChatRequest
 
     fun mapChatResponse(response: ChatResponse): Message

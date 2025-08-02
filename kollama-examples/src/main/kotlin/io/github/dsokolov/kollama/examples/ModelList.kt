@@ -7,6 +7,8 @@ import kotlinx.coroutines.runBlocking
 fun main() = runBlocking {
     val manipulations = ollama().manipulations()
     manipulations.models().forEach { model ->
-        println(model.name)
+        println("*** ${model.name} ***")
+        val details = manipulations.model(model.name)
+        println(details.capabilities)
     }
 }

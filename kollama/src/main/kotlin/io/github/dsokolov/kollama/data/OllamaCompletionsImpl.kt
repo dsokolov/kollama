@@ -8,6 +8,7 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.OllamaCompletions
 import io.github.dsokolov.kollama.domain.model.History
 import io.github.dsokolov.kollama.domain.model.Seed
+import io.github.dsokolov.kollama.domain.model.Tool
 import io.github.dsokolov.kollama.logger.Logger
 
 class OllamaCompletionsImpl(
@@ -40,6 +41,7 @@ class OllamaCompletionsImpl(
         history: History,
         message: Message?,
         seed: Seed?,
+        tools: List<Tool>?,
     ): Message {
         val messages = when (message) {
             null -> history.messages
@@ -51,6 +53,7 @@ class OllamaCompletionsImpl(
                 messages = messages,
                 stream = isStream,
                 seed = seed,
+                tools = tools,
             )
             val response = ollamaRestApi.chat(request)
             ollamaMapper.mapChatResponse(response)

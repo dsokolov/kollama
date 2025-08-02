@@ -4,6 +4,8 @@ import io.github.dsokolov.kollama.data.model.ChatRequest
 import io.github.dsokolov.kollama.data.model.ChatResponse
 import io.github.dsokolov.kollama.data.model.GenerateRequest
 import io.github.dsokolov.kollama.data.model.GenerateResponse
+import io.github.dsokolov.kollama.data.model.OpenApiItem
+import io.github.dsokolov.kollama.data.model.OpenApiName
 import io.github.dsokolov.kollama.data.model.ShowRequest
 import io.github.dsokolov.kollama.data.model.ShowResponse
 import io.github.dsokolov.kollama.data.model.TagsResponse
@@ -16,6 +18,13 @@ import io.github.dsokolov.kollama.domain.model.OllamaModelName
 import io.github.dsokolov.kollama.domain.model.OllamaModelShort
 import io.github.dsokolov.kollama.domain.model.OllamaVersion
 import io.github.dsokolov.kollama.domain.model.Seed
+import io.github.dsokolov.kollama.domain.model.ToolCall
+import io.github.dsokolov.kollama.domain.model.ToolName
+import io.github.dsokolov.kollama.domain.model.ArgumentName
+import io.github.dsokolov.kollama.domain.model.ArgumentValue
+import io.github.dsokolov.kollama.domain.model.Param
+import io.github.dsokolov.kollama.domain.model.ParamType
+import io.github.dsokolov.kollama.domain.model.Tool
 
 /**
  * Implementation of OllamaMapper that handles conversion between data and domain models
@@ -42,6 +51,7 @@ internal class OllamaMapperImpl : OllamaMapper {
         OllamaModelDetails(
             modelFile = showResponse.modelfile,
             parameters = showResponse.parameters,
+            capabilities = showResponse.capabilities,
         )
 
     override fun mapGenerateRequest(
@@ -67,6 +77,7 @@ internal class OllamaMapperImpl : OllamaMapper {
         messages: List<Message>,
         stream: Boolean,
         seed: Seed?,
+        tools: List<Tool>?,
     ): ChatRequest =
         ChatRequest(
             model = model,
@@ -78,6 +89,7 @@ internal class OllamaMapperImpl : OllamaMapper {
                 )
             },
             options = mapChatOptions(seed),
+            tools = tools?.let(::mapTools),
         )
 
     private fun mapChatOptions(seed: Seed?): ChatRequest.Options? {
@@ -89,6 +101,34 @@ internal class OllamaMapperImpl : OllamaMapper {
             )
         }
     }
+
+    private fun mapTools(tools: List<Tool>): List<OpenApiItem> =
+        tools.map(::mapTool)
+
+    private fun mapTool(tool: Tool): OpenApiItem {
+        return OpenApiItem(
+            type = "function",
+            function = OpenApiItem(
+                name = tool.functionName,
+                description = tool.description,
+                parameters = OpenApiItem(
+                    type = "object",
+                    properties = mapFunctionProperties(tool.params)
+                ),
+                required = tool.params.filter { it.isRequired }.map { it.name }
+            ),
+        )
+    }
+
+    private fun mapFunctionProperties(params: List<Param>): Map<OpenApiName, OpenApiItem> =
+        params.associate { param ->
+            param.name to OpenApiItem(
+                type = when (param.type) {
+                    ParamType.STRING -> "string"
+                },
+                description = param.description,
+            )
+        }
 
     private fun mapRoleToString(role: MessageRole): String =
         when (role) {
@@ -111,6 +151,13 @@ internal class OllamaMapperImpl : OllamaMapper {
     override fun mapChatResponse(response: ChatResponse): Message =
         Message(
             role = mapStringToRole(response.message.role),
-            content = response.message.content
+            content = response.message.content,
+            toolCalls = response.message.toolCalls?.map { toolCall ->
+                ToolCall(
+                    name = ToolName(toolCall.function.name),
+                    arguments = toolCall.function.arguments.mapKeys { ArgumentName(it.key) }
+                        .mapValues { ArgumentValue(it.value) }
+                )
+            }
         )
 }

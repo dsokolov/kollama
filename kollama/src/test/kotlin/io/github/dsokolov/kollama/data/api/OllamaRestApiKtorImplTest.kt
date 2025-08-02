@@ -8,6 +8,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import io.github.dsokolov.kollama.data.model.*
+import io.github.dsokolov.kollama.data.OllamaHttpException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.net.URI
@@ -105,5 +106,62 @@ class OllamaRestApiKtorImplTest {
         val req = ChatRequest(model = "llama2", messages = emptyList(), stream = false)
         val result = api.chat(req)
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `chat throws OllamaHttpException on HTTP 400`() = runBlocking {
+        val api = createApiWithMockEngine { _ ->
+            respond(
+                content = "Bad Request: Invalid model name",
+                status = HttpStatusCode.BadRequest,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Plain.toString())
+            )
+        }
+        val req = ChatRequest(model = "invalid-model", messages = emptyList(), stream = false)
+        
+        val exception = assertThrows(OllamaHttpException::class.java) {
+            runBlocking { api.chat(req) }
+        }
+        
+        assertEquals(400, exception.statusCode)
+        assertEquals("HTTP 400: Bad Request: Invalid model name", exception.message)
+    }
+
+    @Test
+    fun `chat throws OllamaHttpException on HTTP 500`() = runBlocking {
+        val api = createApiWithMockEngine { _ ->
+            respond(
+                content = "Internal Server Error",
+                status = HttpStatusCode.InternalServerError,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Plain.toString())
+            )
+        }
+        val req = ChatRequest(model = "llama2", messages = emptyList(), stream = false)
+        
+        val exception = assertThrows(OllamaHttpException::class.java) {
+            runBlocking { api.chat(req) }
+        }
+        
+        assertEquals(500, exception.statusCode)
+        assertEquals("HTTP 500: Internal Server Error", exception.message)
+    }
+
+    @Test
+    fun `chat throws OllamaHttpException with empty error body`() = runBlocking {
+        val api = createApiWithMockEngine { _ ->
+            respond(
+                content = "",
+                status = HttpStatusCode.BadRequest,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Plain.toString())
+            )
+        }
+        val req = ChatRequest(model = "invalid-model", messages = emptyList(), stream = false)
+        
+        val exception = assertThrows(OllamaHttpException::class.java) {
+            runBlocking { api.chat(req) }
+        }
+        
+        assertEquals(400, exception.statusCode)
+        assertEquals("HTTP 400: Unknown error", exception.message)
     }
 } 

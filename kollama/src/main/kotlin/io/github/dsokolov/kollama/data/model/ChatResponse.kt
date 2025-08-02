@@ -13,5 +13,19 @@ data class ChatResponse(
     data class Message(
         @SerialName("role") val role: String,
         @SerialName("content") val content: String,
-    )
+        @SerialName("tool_calls") val toolCalls: List<ToolCall>? = null,
+    ) {
+
+        @Serializable
+        data class ToolCall(
+            @SerialName("function") val function: Function,
+        ) {
+
+            @Serializable
+            data class Function(
+                @SerialName("name") val name: String,
+                @SerialName("arguments") val arguments: Map<String, String>,
+            )
+        }
+    }
 }

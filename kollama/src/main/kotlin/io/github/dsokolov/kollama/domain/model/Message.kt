@@ -1,5 +1,9 @@
 package io.github.dsokolov.kollama.domain.model
 
+/**
+ * @param toolCalls инструменты, вызываемые сообщением assisstant
+ * @param toolName ответ инструмента, сообещние Tool
+ */
 data class Message(
     val role: MessageRole,
     val content: MessageContent,

@@ -10,16 +10,16 @@ class OllamaModelTest {
 
     @Test
     fun `test OllamaModelName creation and access`() {
-        val modelName = OllamaModelName("llama2")
-        assertEquals("llama2", modelName.model)
+        val modelName: OllamaModelName = "llama2"
+        assertEquals("llama2", modelName)
     }
 
     @Test
     fun `test OllamaModelShort creation`() {
-        val modelName = OllamaModelName("llama2")
+        val modelName: OllamaModelName = "llama2"
         val modelShort = OllamaModelShort(modelName)
         
-        assertEquals("llama2", modelShort.name.model)
+        assertEquals("llama2", modelShort.name)
     }
 
     @Test
@@ -46,9 +46,9 @@ class OllamaModelTest {
 
     @Test
     fun `test OllamaModelName equality`() {
-        val modelName1 = OllamaModelName("llama2")
-        val modelName2 = OllamaModelName("llama2")
-        val modelName3 = OllamaModelName("llama3")
+        val modelName1: OllamaModelName = "llama2"
+        val modelName2: OllamaModelName = "llama2"
+        val modelName3: OllamaModelName = "llama3"
         
         assertEquals(modelName1, modelName2)
         assertNotEquals(modelName1, modelName3)

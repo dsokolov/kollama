@@ -12,4 +12,5 @@ import kotlinx.serialization.Serializable
 data class ShowResponse(
     @SerialName("modelfile") val modelfile: String? = null,
     @SerialName("parameters") val parameters: String? = null,
+    @SerialName("capabilities") val capabilities: List<String>? = null,
 )

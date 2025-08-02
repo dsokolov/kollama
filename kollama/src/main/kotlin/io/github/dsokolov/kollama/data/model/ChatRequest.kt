@@ -9,6 +9,7 @@ data class ChatRequest(
     @SerialName("messages") val messages: List<Message>,
     @SerialName("stream") val stream: Boolean,
     @SerialName("options") val options: Options? = null,
+    @SerialName("tools") val tools: List<OpenApiItem>? = null,
 ) {
 
     @Serializable
