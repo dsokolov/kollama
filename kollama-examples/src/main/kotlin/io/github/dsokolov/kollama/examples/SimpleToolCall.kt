@@ -59,5 +59,5 @@ fun main() = runBlocking {
     val modelName = "qwen2.5-coder:7b"
     val app = SimpleToolCallApp(modelName)
 
-    app.start(100)
+    app.start(420)
 }
