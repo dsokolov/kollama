@@ -58,7 +58,7 @@ internal class OllamaMapperImpl : OllamaMapper {
         )
 
     override fun mapGenerateResponse(response: GenerateResponse): OllamaGeneration =
-        OllamaGeneration.Standard(
+        OllamaGeneration(
             response = response.response
         )
 

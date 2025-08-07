@@ -10,7 +10,23 @@ Add this dependency to module-level `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("io.github.dsokolov:kollama:0.0.1")
+    implementation("io.github.dsokolov:kollama:0.2")
+}
+```
+
+and aks AI about sky color:
+
+```kotlin
+fun main() = runBlocking {
+    val ollama = ollama()
+    val models = ollama.manipulations().models()
+    if (models.isEmpty()) {
+        print("No models installed")
+    } else {
+        val model = models.first()
+        val generation = ollama.completions(model.name).generate("Why is the sky blue?")
+        println(generation.response)
+    }
 }
 ```
 

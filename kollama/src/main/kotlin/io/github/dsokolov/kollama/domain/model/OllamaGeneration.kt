@@ -1,8 +1,3 @@
 package io.github.dsokolov.kollama.domain.model
 
-sealed interface OllamaGeneration {
-
-    data class Standard(
-        val response: String
-    ) : OllamaGeneration
-}
+data class OllamaGeneration(val response: String)
